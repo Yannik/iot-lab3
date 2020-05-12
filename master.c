@@ -37,16 +37,18 @@ AUTOSTART_PROCESSES(&master_process);
 /*---------------------------------------------------------------------------*/
 void input_callback(const void *data, uint16_t len,
   const linkaddr_t *src, const linkaddr_t *dest) {
-  int node_id = linkaddr_to_node_id(src);
-  if (node_id > NUM_NODES || cmd.sender_id > NUM_NODES) {
-    LOG_INFO("An unknown sender appeared!\n");
-    return;
-  }
   if(len == sizeof(struct command)) {
     struct command cmd;
     memcpy(&cmd, data, sizeof(cmd));
+
+    int node_id = linkaddr_to_node_id(src);
+    if (node_id > NUM_NODES || cmd.sender_id > NUM_NODES) {
+      LOG_INFO("An unknown sender appeared!\n");
+      return;
+    }
+
     if (cmd.command == COMMAND_SEND_TEMP) {
-      LOG_INFO("Received Temp %d from %u\n", cmd.data, sender_id);
+      LOG_INFO("Received Temp %d from %u\n", cmd.data, cmd.sender_id);
       temperature[cmd.sender_id-1] = cmd.data;
     } else {
       log_unknown_command(cmd, src);
