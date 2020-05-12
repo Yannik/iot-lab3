@@ -81,6 +81,8 @@ PROCESS_THREAD(slave_process, ev, data)
   nullnet_set_input_callback(input_callback);
 
   fix_randomness(&linkaddr_node_addr);
+  etimer_set(&periodic_timer, CLOCK_SECOND * node_id / 5);
+  PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
 
   etimer_set(&periodic_timer, SEND_INTERVAL);
   while(1) {
