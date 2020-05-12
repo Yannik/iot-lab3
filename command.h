@@ -5,7 +5,7 @@ struct command {
     uint8_t sender_id;
     uint8_t hops;
     uint8_t command;
-    uint8_t data;
+    int8_t data;
 };
 
 #define COMMAND_SEND_TEMP 	1
