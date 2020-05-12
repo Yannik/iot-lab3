@@ -21,10 +21,10 @@
 #define LOG_LEVEL LOG_LEVEL_INFO
 
 #include "helpers.h"
+#include "config.h"
 
 /* Configuration */
 #define PRINT_INTERVAL (120 * CLOCK_SECOND)
-#define NUM_NODES 49
 
 #define TEMP_NOT_RECEIVED -128
 int8_t temperature[NUM_NODES] = {[0 ... NUM_NODES-1] = TEMP_NOT_RECEIVED};
