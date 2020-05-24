@@ -49,18 +49,19 @@ void input_callback(const void *data, uint16_t len,
                     const linkaddr_t *src, const linkaddr_t *dest) {
   if (len != sizeof(struct command))
     return;
-  //struct command cmd = *(struct command*)heapmem_alloc(sizeof(struct command));
-  struct command* cmd = (struct command*) malloc(sizeof(struct command)):
-  static struct command cmd;
-  //memcpy(&cmd, data, sizeof(cmd));
-  if (cmd.command == COMMAND_SEND_TEMP) {
-    if (cmd.sender_id == node_id)
+  struct command cmd_tmp;
+  memcpy(&cmd_tmp, data, sizeof(cmd_tmp));
+  if (cmd_tmp.command == COMMAND_SEND_TEMP) {
+    if (cmd_tmp.sender_id == node_id)
       return;
-    if (cmd.hops > 4)
+    if (cmd_tmp.hops > 4)
       return;
-    if (cmd.seq_id <= seq_id_received[cmd.sender_id] && seq_id_received[cmd.sender_id] - cmd.seq_id < 128)
+    if (cmd_tmp.seq_id <= seq_id_received[cmd_tmp.sender_id] && seq_id_received[cmd_tmp.sender_id] - cmd_tmp.seq_id < 128)
       return;
-    seq_id_received[cmd.sender_id] = cmd.seq_id;
+    seq_id_received[cmd_tmp.sender_id] = cmd_tmp.seq_id;
+
+    static struct command cmd;
+    memcpy(&cmd, &cmd_tmp, sizeof(cmd));
 
     int src_node_id = linkaddr_to_node_id(src);
     LOG_INFO("Scheduling relaying temp %d from %u via %u, seq_id %u, hops %d\n", cmd.data, cmd.sender_id, src_node_id, cmd.seq_id, cmd.hops);
@@ -69,7 +70,7 @@ void input_callback(const void *data, uint16_t len,
     static struct ctimer timer;
     ctimer_set(&timer, (CLOCK_SECOND * node_id) / 50, &sendData, (void *)&cmd);
   } else {
-    log_unknown_command(cmd, src);
+    log_unknown_command(cmd_tmp, src);
   }
 }
 /*---------------------------------------------------------------------------*/
@@ -104,7 +105,7 @@ PROCESS_THREAD(slave_process, ev, data)
     cmd.seq_id++;
     PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
     etimer_reset(&periodic_timer);
-  }  
+  }
 
   PROCESS_END();
 }
