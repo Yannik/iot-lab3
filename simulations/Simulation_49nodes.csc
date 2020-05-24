@@ -20,9 +20,9 @@
       org.contikios.cooja.mspmote.SkyMoteType
       <identifier>sky1</identifier>
       <description>Slave</description>
-      <source EXPORT="discard">[CONTIKI_DIR]/examples/lab3/slave.c</source>
+      <source EXPORT="discard">[CONTIKI_DIR]/own projects/lab3/slave.c</source>
       <commands EXPORT="discard">make slave.sky TARGET=sky</commands>
-      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/lab3/slave.sky</firmware>
+      <firmware EXPORT="copy">[CONTIKI_DIR]/own projects/lab3/slave.sky</firmware>
       <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.RimeAddress</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.IPAddress</moteinterface>
@@ -43,9 +43,9 @@
       org.contikios.cooja.mspmote.SkyMoteType
       <identifier>sky2</identifier>
       <description>Master</description>
-      <source EXPORT="discard">[CONTIKI_DIR]/examples/lab3/master.c</source>
+      <source EXPORT="discard">[CONTIKI_DIR]/own projects/lab3/master.c</source>
       <commands EXPORT="discard">make master.sky TARGET=sky</commands>
-      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/lab3/master.sky</firmware>
+      <firmware EXPORT="copy">[CONTIKI_DIR]/own projects/lab3/master.sky</firmware>
       <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.RimeAddress</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.IPAddress</moteinterface>

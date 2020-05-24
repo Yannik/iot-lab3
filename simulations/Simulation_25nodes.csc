@@ -20,9 +20,9 @@
       org.contikios.cooja.mspmote.SkyMoteType
       <identifier>sky1</identifier>
       <description>Slave</description>
-      <source EXPORT="discard">[CONTIKI_DIR]/examples/lab3/slave.c</source>
+      <source EXPORT="discard">[CONTIKI_DIR]/own projects/lab3/slave.c</source>
       <commands EXPORT="discard">make slave.sky TARGET=sky</commands>
-      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/lab3/slave.sky</firmware>
+      <firmware EXPORT="copy">[CONTIKI_DIR]/own projects/lab3/slave.sky</firmware>
       <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.RimeAddress</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.IPAddress</moteinterface>
@@ -43,9 +43,9 @@
       org.contikios.cooja.mspmote.SkyMoteType
       <identifier>sky2</identifier>
       <description>Master</description>
-      <source EXPORT="discard">[CONTIKI_DIR]/examples/lab3/master.c</source>
+      <source EXPORT="discard">[CONTIKI_DIR]/own projects/lab3/master.c</source>
       <commands EXPORT="discard">make master.sky TARGET=sky</commands>
-      <firmware EXPORT="copy">[CONTIKI_DIR]/examples/lab3/master.sky</firmware>
+      <firmware EXPORT="copy">[CONTIKI_DIR]/own projects/lab3/master.sky</firmware>
       <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.RimeAddress</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.IPAddress</moteinterface>
@@ -516,10 +516,10 @@
   <plugin>
     org.contikios.cooja.plugins.SimControl
     <width>280</width>
-    <z>3</z>
+    <z>2</z>
     <height>160</height>
-    <location_x>570</location_x>
-    <location_y>2</location_y>
+    <location_x>504</location_x>
+    <location_y>31</location_y>
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.Visualizer
@@ -529,11 +529,11 @@
       <skin>org.contikios.cooja.plugins.skins.GridVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.TrafficVisualizerSkin</skin>
       <skin>org.contikios.mrm.MRMVisualizerSkin</skin>
-      <viewport>0.283090909090909 0.0 0.0 0.283090909090909 148.56727272727275 28.287272727272658</viewport>
+      <viewport>0.19659090909090904 0.0 0.0 0.19659090909090904 51.866161616161605 45.19949494949489</viewport>
     </plugin_config>
-    <width>860</width>
-    <z>0</z>
-    <height>601</height>
+    <width>441</width>
+    <z>3</z>
+    <height>464</height>
     <location_x>1</location_x>
     <location_y>1</location_y>
   </plugin>
@@ -545,10 +545,10 @@
       <coloring />
     </plugin_config>
     <width>761</width>
-    <z>1</z>
+    <z>0</z>
     <height>240</height>
-    <location_x>809</location_x>
-    <location_y>204</location_y>
+    <location_x>553</location_x>
+    <location_y>209</location_y>
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.TimeLine
@@ -584,10 +584,10 @@
       <zoomfactor>500.0</zoomfactor>
     </plugin_config>
     <width>1161</width>
-    <z>4</z>
-    <height>166</height>
+    <z>1</z>
+    <height>361</height>
     <location_x>0</location_x>
-    <location_y>671</location_y>
+    <location_y>476</location_y>
   </plugin>
   <plugin>
     org.contikios.cooja.plugins.Notes
@@ -596,7 +596,7 @@
       <decorations>true</decorations>
     </plugin_config>
     <width>481</width>
-    <z>2</z>
+    <z>4</z>
     <height>160</height>
     <location_x>1000</location_x>
     <location_y>25</location_y>
