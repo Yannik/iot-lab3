@@ -24,11 +24,10 @@
 #include "config.h"
 
 /* Configuration */
-#define PRINT_INTERVAL (120 * CLOCK_SECOND)
+#define PRINT_INTERVAL (10 * CLOCK_SECOND)
 
 #define TEMP_NOT_RECEIVED -128
 int8_t temperature[NUM_NODES] = {[0 ... NUM_NODES-1] = TEMP_NOT_RECEIVED};
-
 
 /*---------------------------------------------------------------------------*/
 PROCESS(master_process, "Master");
@@ -55,7 +54,6 @@ void input_callback(const void *data, uint16_t len,
   } else {
     log_unknown_command(cmd, src);
   }
-  }
 }
 
 PROCESS_THREAD(master_process, ev, data)
@@ -64,7 +62,8 @@ PROCESS_THREAD(master_process, ev, data)
 
   static struct etimer periodic_timer;
 
-  etimer_set(&periodic_timer, PRINT_INTERVAL);
+  nullnet_set_input_callback(input_callback);
+  etimer_set(&periodic_timer, PRINT_INTERVAL + 8 * CLOCK_SECOND);
   while (1) {
     PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
 
@@ -72,12 +71,13 @@ PROCESS_THREAD(master_process, ev, data)
     int i;
     for (i = 0; i < NUM_NODES; i++) {
       if (temperature[i] > max_temp) {
-	max_temp = temperature[i];
+        max_temp = temperature[i];
       }
       temperature[i] = TEMP_NOT_RECEIVED;
     }
     LOG_INFO("Max Temp received in the last 120s: %d\n", max_temp);
 
+    etimer_set(&periodic_timer, PRINT_INTERVAL);
     etimer_reset(&periodic_timer);
   }
   PROCESS_END();

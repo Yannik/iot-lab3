@@ -26,7 +26,7 @@
 #include "config.h"
 
 /* Configuration */
-#define SEND_INTERVAL (120 * CLOCK_SECOND)
+#define SEND_INTERVAL (10 * CLOCK_SECOND)
 uint8_t seq_id_received[NUM_NODES] = {[0 ... NUM_NODES-1] = 0};
 
 /*---------------------------------------------------------------------------*/
@@ -35,18 +35,13 @@ AUTOSTART_PROCESSES(&slave_process);
 
 /*---------------------------------------------------------------------------*/
 
-void sendData()
-{
-  NETSTACK_NETWORK.output(NULL);
-}
-
 void input_callback(const void *data, uint16_t len,
                     const linkaddr_t *src, const linkaddr_t *dest) {
   if (len != sizeof(struct command))
     return;
 
   static struct command cmd;
-  memcpy(&cmd, data, sizeof(cmd));
+  memcpy(&cmd, data, sizeof(struct command));
   if (cmd.command == COMMAND_SEND_TEMP) {
     if (cmd.seq_id <= seq_id_received[cmd.sender_id] && seq_id_received[cmd.sender_id] - cmd.seq_id < 128)
       return;
@@ -58,9 +53,8 @@ void input_callback(const void *data, uint16_t len,
     nullnet_buf = (uint8_t *)&cmd;
     nullnet_len = sizeof(cmd);
     static struct ctimer timer;
-    ctimer_set(&timer, CLOCK_SECOND * (random_rand() % 1000) / 1000, &sendData, NULL);
-
-  } else {
+    NETSTACK_NETWORK.output(NULL);
+  }else{
     log_unknown_command(cmd, src);
   }
 }
@@ -82,7 +76,7 @@ PROCESS_THREAD(slave_process, ev, data)
 
   fix_randomness(&linkaddr_node_addr);
 
-  etimer_set(&periodic_timer, SEND_INTERVAL);
+  etimer_set(&periodic_timer, SEND_INTERVAL + (random_rand() % CLOCK_SECOND * 4));
   while(1) {
     PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&periodic_timer));
 
@@ -90,11 +84,15 @@ PROCESS_THREAD(slave_process, ev, data)
     cmd.data = (random_rand() % 200) - 100;
 
     LOG_INFO("Sending Temperature %d, seq_id %u\n", cmd.data, cmd.seq_id);
+    nullnet_buf = (uint8_t *)&cmd;
+    nullnet_len = sizeof(cmd);
+    NETSTACK_NETWORK.output(NULL);
     NETSTACK_NETWORK.output(NULL);
 
     cmd.seq_id++;
+    etimer_set(&periodic_timer, SEND_INTERVAL);
     etimer_reset(&periodic_timer);
-  }  
+  }
 
   PROCESS_END();
 }
